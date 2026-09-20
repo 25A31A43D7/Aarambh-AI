@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+:root {
+  --paper: #FBF7EE;
+  --paper-2: #F3ECE0;
+  --paper-3: #EAE0CE;
+  --ink: #231F18;
+  --ink-soft: #5E5648;
+  --ink-light: #8C8373;
+  --line: #DDD1B8;
+  --line-strong: #C6B798;
+  --terracotta: #B5551E;
+  --terracotta-dark: #8C3E14;
+  --terracotta-light: #F7E9DE;
+  --green: #1E5C4A;
+  --green-dark: #144134;
+  --green-light: #E5F0EB;
+  --gold: #B88628;
+  --gold-light: #FAF2DC;
+  --card: #FFFDF8;
+  --danger: #A23B27;
+  --danger-light: #FDEBE8;
+  --blue: #1D5C8A;
+  --blue-light: #E8F2F9;
+  --radius: 8px;
+  --shadow: 0 2px 6px rgba(35, 31, 24, 0.06), 0 1px 3px rgba(35, 31, 24, 0.04);
+  --shadow-lg: 0 10px 30px rgba(35, 31, 24, 0.12), 0 3px 8px rgba(35, 31, 24, 0.06);
+}
+
+body {
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: 'Noto Sans', 'Noto Sans Devanagari', 'Noto Sans Telugu', 'Noto Sans Tamil', 'Noto Sans Kannada', 'Noto Sans Bengali', 'Noto Sans Gujarati', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, .font-display {
+  font-family: 'Fraunces', 'Noto Sans Devanagari', 'Noto Sans Telugu', serif;
+}
+
+@keyframes pulseDot {
+  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+  70% { box-shadow: 0 0 0 7px rgba(16, 185, 129, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+.pulse-dot {
+  animation: pulseDot 1.8s infinite;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff !important;
+  }
+}
