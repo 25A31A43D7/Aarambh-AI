@@ -22,6 +22,9 @@ export const AuthView: React.FC<AuthViewProps> = ({
   const [district, setDistrict] = useState(location.district);
   const [state, setState] = useState(location.state);
 
+  // Error State
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
   // OTP Modal State
   const [showOtp, setShowOtp] = useState(false);
   const [otpCode, setOtpCode] = useState('');
@@ -38,8 +41,9 @@ export const AuthView: React.FC<AuthViewProps> = ({
 
   const handleRequestOtp = (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMsg(null);
     if (!phone || phone.length < 10) {
-      alert('Please enter a valid 10-digit mobile number.');
+      setErrorMsg('Please enter a valid 10-digit mobile number.');
       return;
     }
     const generated = Math.floor(1000 + Math.random() * 9000).toString();
@@ -47,6 +51,15 @@ export const AuthView: React.FC<AuthViewProps> = ({
     setOtpInputs(['', '', '', '']);
     setCountdown(30);
     setShowOtp(true);
+  };
+
+  const handleQuickDemoLogin = () => {
+    setErrorMsg(null);
+    onLoginSuccess({
+      name: name || 'Ramesh Kumar',
+      phone: phone || '9848012345',
+      category,
+    });
   };
 
   const handleOtpInput = (index: number, val: string) => {
@@ -62,6 +75,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
   };
 
   const handleVerify = () => {
+    setErrorMsg(null);
     const entered = otpInputs.join('');
     if (entered === otpCode || entered === '1234' || entered.length === 4) {
       setShowOtp(false);
@@ -71,7 +85,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
         category,
       });
     } else {
-      alert('Invalid OTP code. Please enter the 4-digit code shown or click Auto-Fill.');
+      setErrorMsg('Invalid OTP code. Please enter the 4-digit code shown or click Auto-Fill.');
     }
   };
 
@@ -195,13 +209,35 @@ export const AuthView: React.FC<AuthViewProps> = ({
             </select>
           </div>
 
+          {errorMsg && !showOtp && (
+            <div className="p-3 rounded-lg bg-[#FAF2DC] border border-[#B88628] text-xs font-medium text-[#785310]">
+              {errorMsg}
+            </div>
+          )}
+
           <button
             type="submit"
             id="lg_submit_btn"
-            className="w-full flex items-center justify-center gap-2 py-3 rounded-lg bg-[#B5551E] hover:bg-[#8C3E14] text-white font-semibold text-sm transition-all shadow-sm mt-2"
+            className="w-full flex items-center justify-center gap-2 py-3 rounded-lg bg-[#B5551E] hover:bg-[#8C3E14] text-white font-semibold text-sm transition-all shadow-sm mt-2 cursor-pointer"
           >
             <span>Request 4-Digit OTP</span>
             <ArrowRight className="w-4 h-4" />
+          </button>
+
+          <div className="relative flex py-1 items-center">
+            <div className="flex-grow border-t border-[#DDD1B8]"></div>
+            <span className="flex-shrink mx-3 text-[11px] text-[#8C8373] uppercase tracking-wider font-semibold">Or</span>
+            <div className="flex-grow border-t border-[#DDD1B8]"></div>
+          </div>
+
+          <button
+            type="button"
+            id="lg_quick_demo_btn"
+            onClick={handleQuickDemoLogin}
+            className="w-full py-2.5 rounded-lg border-2 border-[#1E5C4A] bg-[#E5F0EB]/60 hover:bg-[#E5F0EB] text-[#144134] font-semibold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-[#1E5C4A]" />
+            <span>Instant Demo Access (Skip OTP)</span>
           </button>
         </form>
 
@@ -221,6 +257,12 @@ export const AuthView: React.FC<AuthViewProps> = ({
             <p className="text-xs text-[#5E5648] text-center mb-4">
               Verification SMS dispatched to <strong>+91 {phone}</strong>
             </p>
+
+            {errorMsg && (
+              <div className="p-2.5 mb-3 rounded-lg bg-[#FAF2DC] border border-[#B88628] text-xs font-medium text-[#785310]">
+                {errorMsg}
+              </div>
+            )}
 
             {/* Simulated SMS Dispatch Notification */}
             <div className="p-3 mb-4 rounded-lg bg-[#FAF2DC] border border-dashed border-[#B88628] text-xs text-[#785310]">

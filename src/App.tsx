@@ -32,8 +32,8 @@ import { ReportsView } from './components/views/ReportsView';
 import { SourcesView } from './components/views/SourcesView';
 
 export const App: React.FC = () => {
-  // Session State
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true);
+  // Session State — Login page opens first
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [currentView, setCurrentView] = useState<string>('dashboard');
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const [modalSourceId, setModalSourceId] = useState<string | null>(null);
