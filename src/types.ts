@@ -14,6 +14,32 @@ export interface UserProfile {
   creditBand: 'new' | 'fair' | 'good';
   existingDebt: number;
   hasJanDhan: boolean;
+  townCity?: string;
+  email?: string;
+  authProvider?: 'phone' | 'google';
+}
+
+export type DocumentType =
+  | 'aadhaar'
+  | 'pan'
+  | 'land'
+  | 'trade'
+  | 'caste'
+  | 'bank_statement'
+  | 'other';
+
+export interface StoredDocument {
+  id: string;
+  docType: DocumentType;
+  title: string;
+  fileName: string;
+  mimeType: string;
+  dataUrl: string;
+  fileSize: number;
+  capturedAt: string;
+  source: 'camera' | 'upload';
+  notes?: string;
+  verified?: boolean;
 }
 
 export interface GPSLocation {
@@ -126,6 +152,7 @@ export interface ChatMessage {
   text: string;
   chunks?: RAGChunk[];
   timestamp: string;
+  modelUsed?: string;
 }
 
 export interface MarketIntelligence {

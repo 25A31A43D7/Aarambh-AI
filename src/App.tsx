@@ -16,6 +16,9 @@ import { Sidebar } from './components/Sidebar';
 import { Topbar } from './components/Topbar';
 import { AuthView } from './components/AuthView';
 import { SourceModal } from './components/SourceModal';
+import { FloatingVoiceAssistant } from './components/FloatingVoiceAssistant';
+import { OfflineIndicator } from './components/OfflineIndicator';
+import { useSavedLanguage } from './hooks/useSavedLanguage';
 
 // Views
 import { DashboardView } from './components/views/DashboardView';
@@ -38,8 +41,8 @@ export const App: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const [modalSourceId, setModalSourceId] = useState<string | null>(null);
 
-  // Localization Language State
-  const [lang, setLang] = useState<Language>('en');
+  // Localization Language State — Persisted across visits via useSavedLanguage hook
+  const [lang, setLang] = useSavedLanguage('en');
 
   // User Profile
   const [user, setUser] = useState<UserProfile>({
@@ -54,6 +57,7 @@ export const App: React.FC = () => {
     creditBand: 'good',
     existingDebt: 0,
     hasJanDhan: true,
+    townCity: 'Warangal',
   });
 
   // Capital State
@@ -134,15 +138,18 @@ export const App: React.FC = () => {
 
   if (!isLoggedIn) {
     return (
-      <AuthView
-        lang={lang}
-        onSelectLang={setLang}
-        location={location}
-        onLoginSuccess={(updated) => {
-          setUser((prev) => ({ ...prev, ...updated }));
-          setIsLoggedIn(true);
-        }}
-      />
+      <>
+        <AuthView
+          lang={lang}
+          onSelectLang={setLang}
+          location={location}
+          onLoginSuccess={(updated) => {
+            setUser((prev) => ({ ...prev, ...updated }));
+            setIsLoggedIn(true);
+          }}
+        />
+        <OfflineIndicator lang={lang} />
+      </>
     );
   }
 
@@ -187,6 +194,8 @@ export const App: React.FC = () => {
               loanCalc={loanCalc}
               savedPlans={savedPlans}
               reportsCount={savedPlans.length}
+              lang={lang}
+              onSelectIdea={setActiveIdea}
               onNavigate={setCurrentView}
             />
           )}
@@ -238,6 +247,7 @@ export const App: React.FC = () => {
               lang={lang}
               onRefreshLocation={handleDetectLocation}
               onOpenSourceModal={(id) => setModalSourceId(id)}
+              onNavigate={setCurrentView}
             />
           )}
 
@@ -246,6 +256,8 @@ export const App: React.FC = () => {
               lang={lang}
               user={user}
               location={location}
+              activeIdea={activeIdea}
+              loanCalc={loanCalc}
               onOpenSourceModal={(id) => setModalSourceId(id)}
             />
           )}
@@ -256,6 +268,7 @@ export const App: React.FC = () => {
               location={location}
               activeIdea={activeIdea}
               lang={lang}
+              onNavigate={setCurrentView}
             />
           )}
 
@@ -303,6 +316,19 @@ export const App: React.FC = () => {
         sourceId={modalSourceId}
         onClose={() => setModalSourceId(null)}
       />
+
+      {/* Persistent Cross-View Vernacular Voice Assistant */}
+      <FloatingVoiceAssistant
+        lang={lang}
+        onSelectLang={setLang}
+        user={user}
+        location={location}
+        activeIdea={activeIdea}
+        onOpenSourceModal={(id) => setModalSourceId(id)}
+      />
+
+      {/* Offline Connectivity Status Monitor */}
+      <OfflineIndicator lang={lang} />
     </div>
   );
 };

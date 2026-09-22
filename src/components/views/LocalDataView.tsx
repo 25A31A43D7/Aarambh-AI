@@ -1,14 +1,17 @@
-import React from 'react';
-import { MapPin, RefreshCw, ExternalLink, ShieldCheck, CheckCircle2, TrendingUp } from 'lucide-react';
+import React, { useState } from 'react';
+import { MapPin, RefreshCw, ExternalLink, ShieldCheck, CheckCircle2, TrendingUp, Landmark } from 'lucide-react';
 import { GPSLocation, Language } from '../../types';
 import { getLocalMarketIntelligence } from '../../utils/location';
 import { getTranslation } from '../../i18n';
+import { NearbyBankBranchFinder } from '../NearbyBankBranchFinder';
+import { BankBranch } from '../../utils/bankBranches';
 
 interface LocalDataViewProps {
   location: GPSLocation;
   lang: Language;
   onRefreshLocation: () => void;
   onOpenSourceModal: (sourceId: string) => void;
+  onNavigate?: (view: string) => void;
 }
 
 export const LocalDataView: React.FC<LocalDataViewProps> = ({
@@ -16,8 +19,10 @@ export const LocalDataView: React.FC<LocalDataViewProps> = ({
   lang,
   onRefreshLocation,
   onOpenSourceModal,
+  onNavigate,
 }) => {
   const data = getLocalMarketIntelligence(location.district, location.state, location.classification);
+  const [selectedTargetBranch, setSelectedTargetBranch] = useState<BankBranch | null>(null);
 
   const MANDI_RATES = [
     { crop: 'Turmeric (Finger)', price: '₹13,200 / Quintal', trend: '+4.2%', source: 'APMC Warangal Mandi' },
@@ -164,6 +169,14 @@ export const LocalDataView: React.FC<LocalDataViewProps> = ({
           </button>
         </div>
       </div>
+
+      {/* Nearby Bank Branch Finder for DPR Submission */}
+      <NearbyBankBranchFinder
+        location={location}
+        lang={lang}
+        onSelectTargetBranch={(branch) => setSelectedTargetBranch(branch)}
+        selectedBranchId={selectedTargetBranch?.id}
+      />
     </div>
   );
 };

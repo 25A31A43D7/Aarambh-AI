@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#144134" />
+      <stop offset="100%" stop-color="#1E5C4A" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F59E0B" />
+      <stop offset="100%" stop-color="#B88628" />
+    </linearGradient>
+    <linearGradient id="sproutGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34D399" />
+      <stop offset="100%" stop-color="#10B981" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Rounded Background Container -->
+  <rect width="512" height="512" rx="108" fill="url(#bgGrad)" />
+  
+  <!-- Subtle Inner Border -->
+  <rect x="16" y="16" width="480" height="480" rx="96" fill="none" stroke="#2D7A64" stroke-width="4" stroke-opacity="0.5" />
+  
+  <!-- Rising Sun of Prosperity in Background -->
+  <circle cx="256" cy="270" r="100" fill="url(#goldGrad)" opacity="0.9" />
+  <circle cx="256" cy="270" r="130" fill="none" stroke="#F59E0B" stroke-width="4" stroke-dasharray="12 12" opacity="0.4" />
+
+  <!-- Stylized Rural Furrows / Soil Base -->
+  <path d="M120 370 Q256 340 392 370" fill="none" stroke="#B5551E" stroke-width="18" stroke-linecap="round" />
+  <path d="M150 405 Q256 385 362 405" fill="none" stroke="#8C3E14" stroke-width="12" stroke-linecap="round" opacity="0.8" />
+  
+  <!-- Central Sprout (Growth & Entrepreneurship) -->
+  <!-- Left Leaf -->
+  <path d="M256 340 C210 320 180 260 200 200 C240 220 256 270 256 340 Z" fill="url(#sproutGrad)" />
+  <!-- Right Leaf -->
+  <path d="M256 340 C280 250 330 200 370 210 C360 270 310 310 256 340 Z" fill="#6EE7B7" />
+  <!-- Center Stem & Upward Bud -->
+  <path d="M256 360 L256 160 Q256 130 264 120 Q248 130 256 160 Z" fill="#FFFFFF" opacity="0.9" />
+  <circle cx="256" cy="130" r="16" fill="#FDE68A" />
+
+  <!-- Sanskrit/Devanagari Root Accent 'आ' motif or Star -->
+  <polygon points="256,70 264,88 284,90 268,103 273,122 256,111 239,122 244,103 228,90 248,88" fill="#FDE68A" />
+</svg>

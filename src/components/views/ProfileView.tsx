@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { UserCheck, ShieldCheck, CheckCircle2, AlertTriangle, Sparkles } from 'lucide-react';
+import { UserCheck, ShieldCheck, CheckCircle2, AlertTriangle, Sparkles, Building2, MapPin } from 'lucide-react';
 import { UserProfile, CapitalState, Language } from '../../types';
 import { calculateBankReadiness } from '../../utils/calculator';
 import { getTranslation } from '../../i18n';
+import { DocumentVault } from '../DocumentVault';
 
 interface ProfileViewProps {
   user: UserProfile;
@@ -55,8 +56,8 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
         </div>
 
         <form onSubmit={handleSave} className="space-y-4 mt-5">
-          {/* Row 1: Name & Phone */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* Row 1: Name, Phone & Town/City */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
               <label className="block text-xs font-semibold text-[#5E5648] mb-1">
                 Full Name / पूरा नाम
@@ -81,7 +82,31 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                 required
               />
             </div>
+            <div>
+              <label className="block text-xs font-semibold text-[#5E5648] mb-1">
+                Town / City / शहर / क़स्बा
+              </label>
+              <input
+                type="text"
+                value={formData.townCity || ''}
+                onChange={(e) => handleChange('townCity', e.target.value)}
+                placeholder="e.g. Warangal / Geesukonda"
+                className="w-full px-3 py-2 rounded-lg border border-[#DDD1B8] bg-white text-sm focus:border-[#B5551E] focus:outline-none"
+              />
+            </div>
           </div>
+
+          {formData.email && (
+            <div className="p-2.5 rounded-lg bg-[#E8F2F9] border border-[#B3D4EE] flex items-center justify-between text-xs text-[#1D5C8A]">
+              <span className="flex items-center gap-1.5 font-medium">
+                <span className="w-2 h-2 rounded-full bg-[#1D5C8A]" />
+                Authenticated via Google Account: <strong>{formData.email}</strong>
+              </span>
+              <span className="text-[10px] uppercase font-bold bg-white px-2 py-0.5 rounded border border-[#B3D4EE]">
+                Google Verified
+              </span>
+            </div>
+          )}
 
           {/* Row 2: Gender & Age */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -274,6 +299,9 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Document Vault (IndexedDB Secure Offline Camera Storage) */}
+      <DocumentVault />
     </div>
   );
 };

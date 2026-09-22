@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
-import { Calculator, Table, PieChart, CheckCircle2, Download, ArrowDownToLine } from 'lucide-react';
+import { Calculator, Table, PieChart, CheckCircle2, Download, ArrowDownToLine, ShieldCheck, Sparkles } from 'lucide-react';
 import { LoanCalcResult, BusinessIdea, UserProfile, GPSLocation, Language } from '../../types';
 import { calculateLoanWithMoratorium, fmtINR } from '../../utils/calculator';
 import { getTranslation } from '../../i18n';
+import { LoanEligibilityQuickChecker } from '../LoanEligibilityQuickChecker';
 
 interface CalcViewProps {
   user: UserProfile;
   location: GPSLocation;
   activeIdea: BusinessIdea;
   lang: Language;
+  onNavigate?: (view: string) => void;
 }
 
 export const CalcView: React.FC<CalcViewProps> = ({
@@ -16,8 +18,9 @@ export const CalcView: React.FC<CalcViewProps> = ({
   location,
   activeIdea,
   lang,
+  onNavigate,
 }) => {
-  const [activeTab, setActiveTab] = useState<'emi' | 'schedule' | 'be'>('emi');
+  const [activeTab, setActiveTab] = useState<'eligibility' | 'emi' | 'schedule' | 'be'>('eligibility');
 
   const [capex, setCapex] = useState<number>(activeIdea.fixedCapex || 220000);
   const [rate, setRate] = useState<number>(9.5);
@@ -98,11 +101,26 @@ export const CalcView: React.FC<CalcViewProps> = ({
         </div>
 
         {/* Tab Headers */}
-        <div className="flex border-b border-[#DDD1B8] gap-4 mb-5">
+        <div className="flex flex-wrap border-b border-[#DDD1B8] gap-2 sm:gap-4 mb-5">
+          <button
+            type="button"
+            onClick={() => setActiveTab('eligibility')}
+            className={`pb-2 text-xs md:text-sm font-bold border-b-2 transition-all flex items-center gap-1.5 cursor-pointer ${
+              activeTab === 'eligibility'
+                ? 'border-[#1E5C4A] text-[#144134]'
+                : 'border-transparent text-[#5E5648] hover:text-[#231F18]'
+            }`}
+          >
+            <ShieldCheck className="w-4 h-4 text-[#1E5C4A]" />
+            <span>Loan Eligibility Quick-Checker</span>
+            <span className="px-1.5 py-0.2 rounded text-[10px] font-bold bg-[#E5F0EB] text-[#1E5C4A]">
+              RBI Benchmark
+            </span>
+          </button>
           <button
             type="button"
             onClick={() => setActiveTab('emi')}
-            className={`pb-2 text-xs md:text-sm font-bold border-b-2 transition-all ${
+            className={`pb-2 text-xs md:text-sm font-bold border-b-2 transition-all cursor-pointer ${
               activeTab === 'emi'
                 ? 'border-[#B5551E] text-[#8C3E14]'
                 : 'border-transparent text-[#5E5648] hover:text-[#231F18]'
@@ -113,18 +131,18 @@ export const CalcView: React.FC<CalcViewProps> = ({
           <button
             type="button"
             onClick={() => setActiveTab('schedule')}
-            className={`pb-2 text-xs md:text-sm font-bold border-b-2 transition-all ${
+            className={`pb-2 text-xs md:text-sm font-bold border-b-2 transition-all cursor-pointer ${
               activeTab === 'schedule'
                 ? 'border-[#B5551E] text-[#8C3E14]'
                 : 'border-transparent text-[#5E5648] hover:text-[#231F18]'
             }`}
           >
-            Full Amortization Table ({result.schedule.length} Months)
+            Full Amortization Table ({result.schedule.length} Mos)
           </button>
           <button
             type="button"
             onClick={() => setActiveTab('be')}
-            className={`pb-2 text-xs md:text-sm font-bold border-b-2 transition-all ${
+            className={`pb-2 text-xs md:text-sm font-bold border-b-2 transition-all cursor-pointer ${
               activeTab === 'be'
                 ? 'border-[#B5551E] text-[#8C3E14]'
                 : 'border-transparent text-[#5E5648] hover:text-[#231F18]'
@@ -133,6 +151,23 @@ export const CalcView: React.FC<CalcViewProps> = ({
             Break-Even Sales Economics
           </button>
         </div>
+
+        {/* TAB: LOAN ELIGIBILITY QUICK-CHECKER */}
+        {activeTab === 'eligibility' && (
+          <div className="space-y-4">
+            <LoanEligibilityQuickChecker
+              user={user}
+              location={location}
+              activeIdea={activeIdea}
+              lang={lang}
+              onApplyCapacityToCapex={(capacity) => {
+                setCapex(capacity);
+                setActiveTab('emi');
+              }}
+              onNavigate={onNavigate}
+            />
+          </div>
+        )}
 
         {/* TAB 1: LOAN & MORATORIUM EMI */}
         {activeTab === 'emi' && (

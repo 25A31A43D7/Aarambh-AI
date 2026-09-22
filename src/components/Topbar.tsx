@@ -4,6 +4,7 @@ import { GPSLocation, Language } from '../types';
 import { getTranslation } from '../i18n';
 import { NAV_ITEMS } from './Sidebar';
 import { requestMicrophonePermission } from '../utils/voice';
+import { PWAInstallButton } from './PWAInstallButton';
 
 interface TopbarProps {
   currentView: string;
@@ -38,18 +39,34 @@ export const Topbar: React.FC<TopbarProps> = ({
       <div className="flex items-center gap-2.5">
         <button
           id="mobile_menu_btn"
-          className="md:hidden p-2 text-[#5E5648] hover:text-[#231F18] rounded-lg hover:bg-[#F3ECE0]"
+          className="md:hidden p-2 text-[#5E5648] hover:text-[#231F18] rounded-lg hover:bg-[#F3ECE0] cursor-pointer"
           onClick={onOpenSidebar}
           aria-label="Open navigation menu"
         >
           <Menu className="w-5 h-5" />
         </button>
-        <h1 className="font-display text-base md:text-xl font-bold text-[#231F18] m-0">
-          {title}
-        </h1>
+        <div>
+          <h1 className="font-display text-base md:text-xl font-bold text-[#231F18] m-0 leading-tight">
+            {title}
+          </h1>
+          <span className="hidden lg:inline-flex items-center gap-1.5 text-[10px] text-[#5E5648] font-semibold">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#1E5C4A]" />
+            PMEGP & Lead Bank Underwriting Portal
+          </span>
+        </div>
       </div>
 
       <div className="flex items-center gap-1.5 md:gap-3">
+        {/* Stage Progress Pill on Desktop */}
+        <div className="hidden xl:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#FAF7F0] border border-[#DDD1B8] text-[11px] font-semibold text-[#5E5648]">
+          <span className="w-2 h-2 rounded-full bg-[#B5551E]" />
+          <span>Stage 3 of 5:</span>
+          <strong className="text-[#1E5C4A]">Subsidy & Eligibility</strong>
+        </div>
+
+        {/* PWA In-App Install Action */}
+        <PWAInstallButton lang={lang} />
+
         {/* Microphone Permission Button */}
         <button
           id="topbar_mic_permission_btn"

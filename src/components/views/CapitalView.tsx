@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Wallet, CheckCircle2, AlertCircle, ArrowRight, Calculator, Compass } from 'lucide-react';
+import { Wallet, CheckCircle2, AlertCircle, ArrowRight, Calculator, Compass, ShieldCheck } from 'lucide-react';
 import { CapitalState, UserProfile, Language } from '../../types';
 import { fmtINR } from '../../utils/calculator';
 import { getTranslation } from '../../i18n';
@@ -225,7 +225,7 @@ export const CapitalView: React.FC<CapitalViewProps> = ({
               handleApplyChanges();
               onNavigate('calc');
             }}
-            className="px-4 py-2 rounded-lg bg-[#B5551E] hover:bg-[#8C3E14] text-white text-xs font-semibold transition-all flex items-center gap-1.5 shadow-xs"
+            className="px-4 py-2 rounded-lg bg-[#B5551E] hover:bg-[#8C3E14] text-white text-xs font-semibold transition-all flex items-center gap-1.5 shadow-xs cursor-pointer"
           >
             <Calculator className="w-3.5 h-3.5" />
             <span>Load into Loan Calculator</span>
@@ -233,9 +233,19 @@ export const CapitalView: React.FC<CapitalViewProps> = ({
           <button
             onClick={() => {
               handleApplyChanges();
+              onNavigate('calc');
+            }}
+            className="px-4 py-2 rounded-lg bg-[#E5F0EB] hover:bg-[#DEEAE3] text-[#144134] border border-[#1E5C4A]/40 text-xs font-semibold transition-all flex items-center gap-1.5 shadow-xs cursor-pointer"
+          >
+            <ShieldCheck className="w-3.5 h-3.5 text-[#1E5C4A]" />
+            <span>Check Loan Eligibility (RBI Norms)</span>
+          </button>
+          <button
+            onClick={() => {
+              handleApplyChanges();
               onNavigate('modeA');
             }}
-            className="px-4 py-2 rounded-lg border border-[#DDD1B8] bg-white hover:bg-[#F3ECE0] text-[#231F18] text-xs font-semibold transition-all flex items-center gap-1.5"
+            className="px-4 py-2 rounded-lg border border-[#DDD1B8] bg-white hover:bg-[#F3ECE0] text-[#231F18] text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer"
           >
             <Compass className="w-3.5 h-3.5 text-[#1E5C4A]" />
             <span>Discover Ideas for {fmtINR(totalEquity)} Equity</span>

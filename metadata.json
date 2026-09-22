@@ -1,7 +1,7 @@
 {
   "name": "Aarambh AI",
   "description": "आरंभ — Rural business advisory and bank-ready loan DPR enablement platform in 8 Indian languages.",
-  "requestFramePermissions": ["geolocation", "microphone"],
+  "requestFramePermissions": ["geolocation", "microphone", "camera"],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
 
